@@ -5,7 +5,7 @@
     <!-- native and v-model -->
     <div>
       <h2>v-on.native modifier removed and v-model changes</h2>
-      <AppInput v-model="msg" @click.native="handleAppInputClicked" />
+      <AppInput v-model="msg" @click="handleAppInputClicked" />
       <hr />
     </div>
 
@@ -15,7 +15,7 @@
       <label> <input type="checkbox" v-model="showMsg" /> Show Message </label>
 
       <transition>
-        <div v-if="showMsg" key="yes">{{ msg | caps }}</div>
+        <div v-if="showMsg" key="yes">{{ caps(msg) }}</div>
         <div v-else key="no">Message Hidden</div>
       </transition>
       <hr />
@@ -24,7 +24,7 @@
     <!-- v-bind merge -->
     <div>
       <h2>
-        v-bind Merge Behavior <span id="red" v-bind="{ id: 'blue' }"></span>
+        v-bind Merge Behavior <span v-bind="{ id: 'blue' }" id="red"></span>
       </h2>
       <hr />
     </div>
@@ -63,7 +63,7 @@ export default {
   },
   directives: {
     clickOutside: {
-      bind(el, binding) {
+      beforeMount(el, binding) {
         el.__ClickOutsideHandler__ = (event) => {
           if (!(el === event.target || el.contains(event.target))) {
             binding.value(event);
@@ -71,18 +71,15 @@ export default {
         };
         document.body.addEventListener("click", el.__ClickOutsideHandler__);
       },
-      unbind(el) {
+      unmounted(el) {
         document.body.removeEventListener("click", el.__ClickOutsideHandler__);
       },
     },
   },
-  filters: {
+  methods: {
     caps(value) {
       return value.toUpperCase();
     },
-  },
-
-  methods: {
     handleAppInputClicked() {
       console.log("app input clicked");
     },
@@ -101,10 +98,10 @@ export default {
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 1s ease;
 }
 
-.v-enter,
+.v-enter-from,
 .v-leave-to {
   opacity: 0;
 }

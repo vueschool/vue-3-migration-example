@@ -1,8 +1,8 @@
-import Vue from "vue";
+import { createApp, configureCompat } from "vue";
 import App from "./App.vue";
 
-Vue.config.productionTip = false;
+configureCompat({
+  MODE: 3,
+});
 
-new Vue({
-  render: (h) => h(App),
-}).$mount("#app");
+createApp(App).mount("#app");

@@ -1,5 +1,5 @@
-<template functional>
-  <component :is="`h${props.level}`" v-bind="attrs" v-on="listeners">
+<template>
+  <component :is="`h${level}`" v-bind="$attrs">
     <slot></slot>
   </component>
 </template>
