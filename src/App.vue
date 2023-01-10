@@ -2,16 +2,16 @@
   <div id="app">
     <AppHeader level="1">Example Migration App</AppHeader>
 
-    <!-- native and v-model -->
-    <div>
-      <h2>v-on.native modifier removed and v-model changes</h2>
+    <!-- Section 1 -->
+    <section>
+      <h2>1. v-on.native modifier removed and v-model changes</h2>
       <AppInput v-model="msg" @click="handleAppInputClicked" />
       <hr />
-    </div>
+    </section>
 
-    <!-- key and transition class -->
-    <div>
-      <h2>Key Usage and Transition Class Change</h2>
+    <!-- Section 2 -->
+    <section>
+      <h2>2. Key Usage and Transition Class Change</h2>
       <label> <input type="checkbox" v-model="showMsg" /> Show Message </label>
 
       <transition>
@@ -19,19 +19,19 @@
         <div v-else key="no">Message Hidden</div>
       </transition>
       <hr />
-    </div>
+    </section>
 
-    <!-- v-bind merge -->
-    <div>
+    <!-- Section 3 -->
+    <section>
       <h2>
-        v-bind Merge Behavior <span v-bind="{ id: 'blue' }" id="red"></span>
+        3. v-bind Merge Behavior <span v-bind="{ id: 'blue' }" id="red"></span>
       </h2>
       <hr />
-    </div>
+    </section>
 
-    <!-- directives -->
-    <div v-click-outside="() => (showMenu = false)">
-      <h2>Custom Directives changes</h2>
+    <!-- Section 4 -->
+    <section v-click-outside="() => (showMenu = false)">
+      <h2>4. Custom Directives changes</h2>
       <button @click="showMenu = !showMenu">
         {{ showMenu ? "Hide" : "Show" }} Menu
       </button>
@@ -40,7 +40,20 @@
         <li>Menu Item 2</li>
         <li>Menu Item 3</li>
       </ul>
-    </div>
+      <hr />
+    </section>
+
+    <!-- Section 5 -->
+    <section>
+      <h2>5. Reactivity caveats and watch deep</h2>
+      <ul>
+        <li v-for="(item, i) in food" :key="i">
+          <span style="width: 100px; display: inline-block">{{ item }}</span>
+
+          <span @click="food.splice(i, 1)">❌</span>
+        </li>
+      </ul>
+    </section>
   </div>
 </template>
 
@@ -59,6 +72,7 @@ export default {
       msg: "Hello World",
       showMsg: true,
       showMenu: false,
+      food: ["Hamburger", "Hotdog", "Spaghetti", "Taco"],
     };
   },
   directives: {
@@ -82,6 +96,14 @@ export default {
     },
     handleAppInputClicked() {
       console.log("app input clicked");
+    },
+  },
+  watch: {
+    food: {
+      handler() {
+        alert("Hey stop eating my food!");
+      },
+      deep: true,
     },
   },
 };
